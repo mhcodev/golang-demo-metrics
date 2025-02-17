@@ -1,0 +1,22 @@
+services:
+  golang-api:
+    build: .
+    container_name: demo-golang
+    ports:
+      - "4000:4000"
+  prometheus:
+    image: prom/prometheus
+    container_name: demo-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - golang-api
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: demo-grafana
+    ports:
+      - "4001:3000"
+    depends_on:
+      - prometheus
